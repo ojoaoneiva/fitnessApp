@@ -1,7 +1,7 @@
 # [Fitness App](https://important-edge.surge.sh/)
 
 <p align="center">
-  <img src="./front-end/src/assets/demo/demo.gif" alt="project gif" width="600">
+  <img src="./frontend/src/assets/demo/demo.gif" alt="project gif" width="600">
 </p>
 
 ## About:
@@ -48,11 +48,11 @@ The app's front-end is already deployed, but if you want to run the project in y
 ## Images:
 
 <p align="center">
-  <img src="./front-end/src/assets/demo/mobile.png" alt="project print screen" width="600">
-  <img src="./front-end/src/assets/demo/1.JPG" alt="project print screen" width="600">
-  <img src="./front-end/src/assets/demo/2.JPG" alt="project print screen" width="600">  
-  <img src="./front-end/src/assets/demo/3.JPG" alt="project print screen" width="600">  
-  <img src="./front-end/src/assets/demo/4.JPG" alt="project print screen" width="600">  
-  <img src="./front-end/src/assets/demo/5.JPG" alt="project print screen" width="600">  
-  <img src="./front-end/src/assets/demo/6.JPG" alt="project print screen" width="600">  
+  <img src="./frontend/src/assets/demo/mobile.png" alt="project print screen" width="600">
+  <img src="./frontend/src/assets/demo/1.JPG" alt="project print screen" width="600">
+  <img src="./frontend/src/assets/demo/2.JPG" alt="project print screen" width="600">  
+  <img src="./frontend/src/assets/demo/3.JPG" alt="project print screen" width="600">  
+  <img src="./frontend/src/assets/demo/4.JPG" alt="project print screen" width="600">  
+  <img src="./frontend/src/assets/demo/5.JPG" alt="project print screen" width="600">  
+  <img src="./frontend/src/assets/demo/6.JPG" alt="project print screen" width="600">  
 </p>
