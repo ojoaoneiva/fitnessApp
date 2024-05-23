@@ -1,196 +1,225 @@
-import React, { useState, ChangeEvent } from 'react';
-import {
-  Box,
-  Typography,
-  Stepper,
-  Step,
-  StepLabel,
-  Button,
-  TextField,
-  Slider,
-} from '@mui/material';
+import React, { useState } from 'react';
+import { Box, Typography, Button, Stepper, Step, StepLabel } from '@mui/material';
+import BasicInformationStep from './forms/BasicInfoForm';
+import WorkoutInformationStep from './forms/WorkoutInfoForm';
+import PlanPaymentStep from './forms/PaymentInfoForm';
+import { FormData, FormErrors, StepFormProps } from '../types/TForm';
+import { USER_ROLES } from '../types/TUser';
+import { mockedUsers } from '../mockedData/usersData';
 
-interface FormData {
-  name: string;
-  email: string;
-  age: number;
-  weight: number;
-  goal: string;
-  plan: string;
-  cardNumber: string;
-  expiryDate: string;
-  cvv: string;
-}
-
-const steps = ['Basic Information', 'Workout Information', 'Plan & Payment'];
-
-const StepForm: React.FC = () => {
+const StepForm: React.FC<StepFormProps> = ({ onFinish }) => {
   const [activeStep, setActiveStep] = useState(0);
+  const [isFormSubmitted, setIsFormSubmitted] = useState(false);
   const [formData, setFormData] = useState<FormData>({
     name: '',
     email: '',
-    age: 18,
-    weight: 70,
+    password: '',
+    confirmPassword: '',
+    height: '',
+    weight: '',
     goal: '',
-    plan: '',
+    daysPerWeek: 3,
+    gender: '',
+    lastExerciseRegularly: '',
+    hasDisease: false,
+    diseases: '',
+    cardName: '',
     cardNumber: '',
-    expiryDate: '',
-    cvv: '',
+    cardExpiration: '',
+    cardCVV: '',
+  });
+  const [formErrors, setFormErrors] = useState<FormErrors>({
+    name: '',
+    email: '',
+    password: '',
+    confirmPassword: '',
+    height: '',
+    weight: '',
+    goal: '',
+    daysPerWeek: '',
+    gender: '',
+    lastExerciseRegularly: '',
+    hasDisease: '',
+    diseases: '',
+    cardName: '',
+    cardNumber: '',
+    cardExpiration: '',
+    cardCVV: '',
   });
 
+  const steps = ['Basic Information', 'Workout Information', 'Plan & Payment'];
+
+  const isEmailValid = (email: string): boolean => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
+
+  const validateStep = (step: number) => {
+    const errors: { [key in keyof typeof formData]: string } = {
+      name: '',
+      email: '',
+      password: '',
+      confirmPassword: '',
+      height: '',
+      weight: '',
+      goal: '',
+      daysPerWeek: '',
+      gender: '',
+      lastExerciseRegularly: '',
+      hasDisease: '',
+      diseases: '',
+      cardName: '',
+      cardNumber: '',
+      cardExpiration: '',
+      cardCVV: '',
+    };
+
+    if (step === 0) {
+      if (!formData.name) {
+        errors.name = 'Name is required';
+      }
+      if (!formData.email) {
+        errors.email = 'Email is required';
+      } else if (!isEmailValid(formData.email)) {
+        errors.email = 'Invalid email format';
+      }
+      if (!formData.password) {
+        errors.password = 'Password is required';
+      } else if (formData.password.length < 6) {
+        errors.password = 'Password must be at least 6 characters';
+      }
+      if (!formData.confirmPassword) {
+        errors.confirmPassword = 'Confirm Password is required';
+      } else if (formData.password !== formData.confirmPassword) {
+        errors.confirmPassword = 'Passwords do not match';
+      }
+    } else if (step === 2) {
+      if (!formData.cardName) {
+        errors.cardName = 'Name on Card is required';
+      }
+      if (!formData.cardNumber) {
+        errors.cardNumber = 'Card Number is required';
+      }
+      if (!formData.cardExpiration) {
+        errors.cardExpiration = 'Expiration Date is required';
+      }
+      if (!formData.cardCVV) {
+        errors.cardCVV = 'CVV is required';
+      }
+    }
+    setFormErrors(errors);
+    return !Object.values(errors).some(error => !!error);
+  };
+
   const handleNext = () => {
-    setActiveStep((prevActiveStep) => prevActiveStep + 1);
-  };
-
-  const handleBack = () => {
-    setActiveStep((prevActiveStep) => prevActiveStep - 1);
-  };
-
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setFormData((prevFormData) => ({ ...prevFormData, [name]: value }));
-  };
-
-  const handleSliderChange = (name: keyof FormData) => (
-    event: Event,
-    value: number | number[]
-  ) => {
-    setFormData((prevFormData) => ({ ...prevFormData, [name]: value as number }));
-  };
-
-  const BasicInformation: React.FC = () => (
-    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-      <TextField
-        label="Name"
-        name="name"
-        value={formData.name}
-        onChange={handleChange}
-        fullWidth
-      />
-      <TextField
-        label="Email"
-        name="email"
-        value={formData.email}
-        onChange={handleChange}
-        fullWidth
-      />
-      <TextField
-        label="Age"
-        name="age"
-        type="number"
-        value={formData.age}
-        onChange={handleChange}
-        fullWidth
-      />
-    </Box>
-  );
-
-  const WorkoutInformation: React.FC = () => (
-    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-      <Typography gutterBottom>Weight (kg)</Typography>
-      <Slider
-        value={formData.weight}
-        onChange={handleSliderChange('weight')}
-        aria-labelledby="weight-slider"
-        valueLabelDisplay="auto"
-        step={1}
-        min={40}
-        max={150}
-      />
-      <TextField
-        label="Workout Goal"
-        name="goal"
-        value={formData.goal}
-        onChange={handleChange}
-        fullWidth
-      />
-    </Box>
-  );
-
-  const PlanPaymentInformation: React.FC = () => (
-    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-      <TextField
-        label="Chosen Plan"
-        name="plan"
-        value={formData.plan}
-        onChange={handleChange}
-        fullWidth
-      />
-      <TextField
-        label="Card Number"
-        name="cardNumber"
-        value={formData.cardNumber}
-        onChange={handleChange}
-        fullWidth
-      />
-      <TextField
-        label="Expiry Date"
-        name="expiryDate"
-        value={formData.expiryDate}
-        onChange={handleChange}
-        fullWidth
-      />
-      <TextField
-        label="CVV"
-        name="cvv"
-        value={formData.cvv}
-        onChange={handleChange}
-        fullWidth
-      />
-    </Box>
-  );
-
-  const getStepContent = (step: number) => {
-    switch (step) {
-      case 0:
-        return <BasicInformation />;
-      case 1:
-        return <WorkoutInformation />;
-      case 2:
-        return <PlanPaymentInformation />;
-      default:
-        return 'Unknown step';
+    if (validateStep(activeStep)) {
+      if (activeStep === steps.length - 1) {
+        handleFinish();
+      } else {
+        setActiveStep(prevActiveStep => prevActiveStep + 1);
+      }
     }
   };
 
+  const handleBack = () => {
+    setActiveStep(prevActiveStep => prevActiveStep - 1);
+  };
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFormData(prevFormData => ({ ...prevFormData, [name]: value }));
+
+    if (name === 'password') {
+      if (value.length >= 6) {
+        setFormErrors(prevErrors => ({ ...prevErrors, password: '' }));
+      } else {
+        setFormErrors(prevErrors => ({ ...prevErrors, password: 'Password must be at least 6 characters' }));
+      }
+    } else if (name === 'confirmPassword') {
+      if (value === formData.password) {
+        setFormErrors(prevErrors => ({ ...prevErrors, confirmPassword: '' }));
+      } else {
+        setFormErrors(prevErrors => ({ ...prevErrors, confirmPassword: 'Passwords do not match' }));
+      }
+    } else {
+      setFormErrors(prevErrors => ({ ...prevErrors, [name]: '' }));
+    }
+  };
+
+  const handleFinish = () => {
+    const newUser = {
+      id: (mockedUsers.length + 1).toString(),
+      ...formData,
+      role: USER_ROLES.NORMAL,
+      bio: '',
+      profilePhoto: '',
+      createdAt: new Date().toISOString().split('T')[0]
+    };
+
+    mockedUsers.push(newUser);
+    console.log(mockedUsers);
+    setIsFormSubmitted(true);
+    onFinish();
+  };
+
   return (
-    <Box>
-      <Typography variant="h4" gutterBottom sx={{ fontSize: '3vw', fontWeight: 'bold'}}>
-        Join Our Online Workout Plan
-      </Typography>
-      <Typography variant="body1" paragraph>
-        Start your fitness journey with our customized workout plans. Just fill
-        in the form below to get started.
-      </Typography>
-      <Stepper activeStep={activeStep} sx={{ marginBottom: 3 }}>
-        {steps.map((label, index) => (
-          <Step key={index}>
-            <StepLabel>{label}</StepLabel>
-          </Step>
-        ))}
-      </Stepper>
-      {activeStep === steps.length ? (
-        <Typography variant="h6" align="center">
-          All steps completed - you&apos;re finished!
-        </Typography>
-      ) : (
-        <>
-          <Box>{getStepContent(activeStep)}</Box>
-          <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
-            <Button
-              color="inherit"
-              disabled={activeStep === 0}
-              onClick={handleBack}
-              sx={{ mr: 1 }}
-            >
+    <Box sx={{ maxWidth: 800, margin: 'auto' }}>
+      {!isFormSubmitted && (
+        <React.Fragment>
+          <Typography variant="h4" gutterBottom sx={{ fontWeight: 'bold', }}>
+            Join Our Online Workout Plan
+          </Typography>
+          <Stepper activeStep={activeStep}>
+            {steps.map((label, index) => (
+              <Step key={index}>
+                <StepLabel>{label}</StepLabel>
+              </Step>
+            ))}
+          </Stepper>
+          <Box>
+            {activeStep === 0 && (
+              <BasicInformationStep
+                formData={formData}
+                formErrors={formErrors}
+                handleChange={handleChange}
+                setFormData={setFormData}
+                setFormErrors={setFormErrors}
+              />
+            )}
+            {activeStep === 1 && (
+              <WorkoutInformationStep
+                formData={formData}
+                handleChange={handleChange}
+                setFormData={setFormData}
+              />
+            )}
+            {activeStep === 2 && (
+              <PlanPaymentStep
+                formData={formData}
+                formErrors={formErrors}
+                setFormData={setFormData}
+                setFormErrors={setFormErrors}
+              />
+            )}
+          </Box>
+          <Box sx={{ display: 'flex', justifyContent: 'space-between', pt: 2, marginTop: 5 }}>
+            <Button disabled={activeStep === 0} onClick={handleBack}>
               Back
             </Button>
-            <Box sx={{ flex: '1 1 auto' }} />
-            <Button onClick={handleNext}>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={handleNext}
+            >
               {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
             </Button>
           </Box>
-        </>
+        </React.Fragment>
+      )}
+      {isFormSubmitted && (
+        <Typography variant="h6" gutterBottom>
+          Your registration is complete! Please wait while we authorize your plan. You will receive a confirmation email shortly.
+        </Typography>
       )}
     </Box>
   );
