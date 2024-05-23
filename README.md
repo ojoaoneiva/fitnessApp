@@ -49,10 +49,10 @@ The app's front-end is already deployed, but if you want to run the project in y
 
 <p align="center">
   <img src="./frontend/src/assets/demo/mobile.png" alt="project print screen" width="600">
-  <img src="./frontend/src/assets/demo/1.JPG" alt="project print screen" width="600">
-  <img src="./frontend/src/assets/demo/2.JPG" alt="project print screen" width="600">  
-  <img src="./frontend/src/assets/demo/3.JPG" alt="project print screen" width="600">  
-  <img src="./frontend/src/assets/demo/4.JPG" alt="project print screen" width="600">  
-  <img src="./frontend/src/assets/demo/5.JPG" alt="project print screen" width="600">  
-  <img src="./frontend/src/assets/demo/6.JPG" alt="project print screen" width="600">  
+  <img src="./frontend/src/assets/demo/1.PNG" alt="project print screen" width="600">
+  <img src="./frontend/src/assets/demo/2.PNG" alt="project print screen" width="600">  
+  <img src="./frontend/src/assets/demo/3.PNG" alt="project print screen" width="600">  
+  <img src="./frontend/src/assets/demo/4.PNG" alt="project print screen" width="600">  
+  <img src="./frontend/src/assets/demo/5.PNG" alt="project print screen" width="600">  
+  <img src="./frontend/src/assets/demo/6.PNG" alt="project print screen" width="600">  
 </p>
