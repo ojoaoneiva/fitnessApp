@@ -27,7 +27,7 @@ The app's front-end is already deployed, but if you want to run the project in y
     git clone https://github.com/ojoaoneiva/fitnessApp.git
 
 # Enter the front-end paste:
-    cd ..
+    cd fitnessApp
     cd frontend
 
 # Install the app's dependencies:
